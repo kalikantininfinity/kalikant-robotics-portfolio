@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" role="img" aria-label="Software grid">
+  <rect width="760" height="440" rx="28" fill="#03101c"/>
+  <g opacity=".12" stroke="#82dbff"><path d="M0 70h760M0 140h760M0 210h760M0 280h760M0 350h760M95 0v440M190 0v440M285 0v440M380 0v440M475 0v440M570 0v440M665 0v440"/></g>
+  <g font-family="Consolas, monospace" font-size="20" font-weight="700">
+    <rect x="70" y="95" width="180" height="86" rx="18" fill="#06131f" stroke="#20dcff" stroke-width="3"/><text x="104" y="148" fill="#e8f7ff">Python</text>
+    <rect x="290" y="95" width="180" height="86" rx="18" fill="#06131f" stroke="#3cff8f" stroke-width="3"/><text x="332" y="148" fill="#e8f7ff">ROS 2</text>
+    <rect x="510" y="95" width="180" height="86" rx="18" fill="#06131f" stroke="#ff9f1c" stroke-width="3"/><text x="562" y="148" fill="#e8f7ff">Linux</text>
+    <rect x="70" y="220" width="180" height="86" rx="18" fill="#06131f" stroke="#ff9f1c" stroke-width="3"/><text x="114" y="273" fill="#e8f7ff">C / C++</text>
+    <rect x="290" y="220" width="180" height="86" rx="18" fill="#06131f" stroke="#20dcff" stroke-width="3"/><text x="338" y="273" fill="#e8f7ff">Git</text>
+    <rect x="510" y="220" width="180" height="86" rx="18" fill="#06131f" stroke="#9b8cff" stroke-width="3"/><text x="548" y="273" fill="#e8f7ff">Agents</text>
+  </g>
+  <path d="M250 138h40M470 138h40M250 263h40M470 263h40M160 181v39M380 181v39M600 181v39" stroke="#82dbff" stroke-width="3" opacity=".55"/>
+  <text x="34" y="50" fill="#ff9f1c" font-family="Consolas, monospace" font-size="22" font-weight="700">SOFTWARE ENGINEERING SYSTEM</text>
+  <text x="34" y="395" fill="#8eabc0" font-family="Consolas, monospace" font-size="18">versioned • testable • explainable • rebuildable</text>
+</svg>

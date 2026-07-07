@@ -1,0 +1,11 @@
+{
+  "name": "Kalikant Jha Robotics Portfolio",
+  "short_name": "KJ AMDVS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#02080f",
+  "theme_color": "#06131f",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

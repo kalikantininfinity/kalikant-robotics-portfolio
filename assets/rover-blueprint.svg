@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" role="img" aria-label="Rover blueprint">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1"><stop stop-color="#20dcff"/><stop offset="1" stop-color="#3cff8f"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="760" height="440" rx="28" fill="#03101c"/>
+  <path d="M0 80h760M0 160h760M0 240h760M0 320h760M95 0v440M190 0v440M285 0v440M380 0v440M475 0v440M570 0v440M665 0v440" stroke="#82dbff" opacity=".12"/>
+  <g filter="url(#glow)">
+    <rect x="220" y="145" width="320" height="150" rx="28" fill="#071a2b" stroke="url(#g)" stroke-width="5"/>
+    <rect x="170" y="162" width="70" height="58" rx="18" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+    <rect x="520" y="162" width="70" height="58" rx="18" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+    <rect x="170" y="222" width="70" height="58" rx="18" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+    <rect x="520" y="222" width="70" height="58" rx="18" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+    <path d="M540 220h80" stroke="#ff9f1c" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="380" cy="220" r="32" fill="#3cff8f" opacity=".9"/>
+    <path d="M380 220L620 120" stroke="#20dcff" stroke-width="3" opacity=".7"/>
+    <path d="M380 220L635 220" stroke="#20dcff" stroke-width="3" opacity=".7"/>
+    <path d="M380 220L620 320" stroke="#20dcff" stroke-width="3" opacity=".7"/>
+  </g>
+  <text x="34" y="50" fill="#ff9f1c" font-family="Consolas, monospace" font-size="22" font-weight="700">ROVER MECHANICAL + SENSOR BLUEPRINT</text>
+  <text x="34" y="395" fill="#8eabc0" font-family="Consolas, monospace" font-size="18">camera • lidar • imu • gnss • e-stop • watchdog</text>
+</svg>

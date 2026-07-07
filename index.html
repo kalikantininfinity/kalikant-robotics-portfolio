@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kalikant Jha — CS student and robotics builder developing AMDVS, a self-funded autonomous multi-domain vehicle system with ROS 2, Jetson, computer vision, and LLM decision support." />
+  <meta name="theme-color" content="#06131f" />
+  <meta property="og:title" content="Kalikant Jha | Robotics + Embedded AI" />
+  <meta property="og:description" content="Self-funded robotics portfolio for AMDVS: autonomous rover, LLM decision support, and drone docking research." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/og-preview.svg" />
+  <title>Kalikant Jha | Robotics + Embedded AI</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Kalikant Jha home">
+        <span class="brand-orb"></span>
+        <span>KJ<span class="accent">/</span>AMDVS</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" data-nav-links>
+        <a href="#mission">Mission</a>
+        <a href="#amdvs">AMDVS</a>
+        <a href="#simulation">Simulation</a>
+        <a href="#phases">Phases</a>
+        <a href="#stack">Stack</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section-pad" id="mission">
+      <div class="hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="live-dot"></span> Autonomous systems • Computer vision • Embedded AI</p>
+          <h1>Building robotics software that survives the real world.</h1>
+          <p class="hero-text">
+            I am <strong>Kalikant Jha</strong>, a CS student at Arkansas State University building AMDVS:
+            a self-funded autonomous vehicle platform where ROS 2, Jetson inference, sensor fusion,
+            and LLM decision support meet physical hardware.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#amdvs">Explore AMDVS</a>
+            <a class="btn secondary" href="https://github.com/kalikantinfinity" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <div class="signal-strip" aria-label="Current focus areas">
+            <span>ROS 2</span>
+            <span>YOLOv8</span>
+            <span>TensorRT</span>
+            <span>Nav2</span>
+            <span>Jetson</span>
+            <span>LLM Agents</span>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" aria-label="Animated autonomy dashboard">
+          <div class="hud-card hero-hud">
+            <div class="hud-topline">
+              <span>AMDVS CONTROL SURFACE</span>
+              <span class="status-pill">ONLINE</span>
+            </div>
+            <canvas id="heroCanvas" width="760" height="520" aria-label="Live rover sensor simulation"></canvas>
+            <div class="hud-readouts">
+              <div><span>Perception</span><strong id="readoutFps">30 FPS</strong></div>
+              <div><span>Route</span><strong id="readoutRoute">Stable</strong></div>
+              <div><span>Safety</span><strong id="readoutSafety">Watchdog</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-bar reveal" aria-label="Project snapshot">
+      <div><span class="metric">01</span><span>self-funded robotics platform</span></div>
+      <div><span class="metric">30</span><span>FPS on-device vision target</span></div>
+      <div><span class="metric">03</span><span>phases: rover → LLM → drone</span></div>
+      <div><span class="metric">24/7</span><span>builder mindset</span></div>
+    </section>
+
+    <section class="section-pad" id="amdvs">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Flagship project</p>
+        <h2>AMDVS — Autonomous Multi-Domain Vehicle System</h2>
+        <p>
+          A physical AI platform designed around perception, planning, decision support, safety reflexes,
+          and future aerial cooperation. The goal is not a demo that works once — it is a system I can debug,
+          explain, rebuild, and keep improving.
+        </p>
+      </div>
+
+      <div class="project-grid">
+        <article class="feature-card reveal wide-card">
+          <div class="card-kicker">System architecture</div>
+          <h3>From camera pixels to robot action</h3>
+          <p>
+            The rover pipeline turns sensor input into object detections, fused state estimates, navigation commands,
+            and safety decisions. Phase 2 adds LLM-based reasoning as a decision-support layer, not as the only control brain.
+          </p>
+          <div class="architecture" aria-label="AMDVS architecture diagram">
+            <div class="arch-node camera">Camera<br><small>CSI / USB</small></div>
+            <div class="arch-line"></div>
+            <div class="arch-node vision">Vision AI<br><small>YOLO + TensorRT</small></div>
+            <div class="arch-line"></div>
+            <div class="arch-node ros">ROS 2<br><small>Topics + Nodes</small></div>
+            <div class="arch-line"></div>
+            <div class="arch-node nav">Nav2 / EKF<br><small>Path + State</small></div>
+            <div class="arch-line"></div>
+            <div class="arch-node action">Rover<br><small>Motion + Safety</small></div>
+          </div>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="card-kicker">Compute</div>
+          <h3>Jetson Orin Nano Super</h3>
+          <p>Edge compute for camera inference, ROS 2 processing, and robotics experiments without depending only on cloud processing.</p>
+          <div class="chip-list"><span>CUDA</span><span>TensorRT</span><span>Ubuntu</span><span>JetPack</span></div>
+        </article>
+
+        <article class="feature-card reveal">
+          <div class="card-kicker">Safety first</div>
+          <h3>Hardware reflex layer</h3>
+          <p>Emergency stop, watchdog timing, sensor sanity checks, and conservative fallback behaviors are treated as core engineering, not decoration.</p>
+          <div class="pulse-meter"><span></span><span></span><span></span><span></span><span></span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-pad simulation-section" id="simulation">
+      <div class="section-heading reveal compact">
+        <p class="eyebrow">Interactive robotics graphic</p>
+        <h2>Live autonomy simulation</h2>
+        <p>
+          This canvas gives the homepage motion: a rover, perception rays, obstacle detections, route planning,
+          and a decision-support overlay. It makes the page feel like robotics instead of a plain resume.
+        </p>
+      </div>
+
+      <div class="sim-layout reveal">
+        <div class="hud-card sim-card">
+          <div class="hud-topline">
+            <span>SIM / SENSOR FUSION</span>
+            <span class="status-pill cyan">RUNNING</span>
+          </div>
+          <canvas id="simCanvas" width="980" height="560" aria-label="Interactive robot simulation"></canvas>
+        </div>
+        <aside class="sim-panel" aria-label="Simulation controls">
+          <h3>Mission Console</h3>
+          <p id="consoleText">Rover is scanning, choosing a safe route, and reporting high-level reasoning.</p>
+          <button class="console-btn" type="button" data-sim-mode="normal">Normal Route</button>
+          <button class="console-btn" type="button" data-sim-mode="obstacle">Add Obstacle Event</button>
+          <button class="console-btn" type="button" data-sim-mode="llm">Show LLM Layer</button>
+          <div class="console-log" id="consoleLog" aria-live="polite"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-pad" id="phases">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Roadmap</p>
+        <h2>Three-phase build plan</h2>
+        <p>The current direction reflects the upgraded phase order: ground autonomy first, LLM integration second, drone cooperation third.</p>
+      </div>
+
+      <div class="phase-timeline">
+        <article class="phase-card reveal active">
+          <span class="phase-number">01</span>
+          <h3>Autonomous ground rover</h3>
+          <p>ROS 2, OpenCV, YOLOv8, TensorRT, camera perception, lane following, Nav2, sensor fusion, and safety watchdogs.</p>
+          <ul>
+            <li>Real-time object detection</li>
+            <li>Waypoint navigation</li>
+            <li>LiDAR / GNSS / IMU roadmap</li>
+          </ul>
+        </article>
+        <article class="phase-card reveal">
+          <span class="phase-number">02</span>
+          <h3>LLM decision support</h3>
+          <p>High-level reasoning layer that reads system state, summarizes events, explains failures, and helps choose safe next actions.</p>
+          <ul>
+            <li>Mission memory and logs</li>
+            <li>RAG-style project documentation</li>
+            <li>Human-readable decision reports</li>
+          </ul>
+        </article>
+        <article class="phase-card reveal">
+          <span class="phase-number">03</span>
+          <h3>Cooperating drone module</h3>
+          <p>Later expansion: overhead reconnaissance, AprilTag/ArUco docking, and return-to-rover coordination.</p>
+          <ul>
+            <li>Drone launch and return workflow</li>
+            <li>Marker-based precision landing</li>
+            <li>Ground-air coordination</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-pad" id="stack">
+      <div class="section-heading reveal compact">
+        <p class="eyebrow">Technical stack</p>
+        <h2>Robotics + CS + AI skill map</h2>
+      </div>
+      <div class="stack-grid">
+        <article class="stack-card reveal">
+          <img src="assets/rover-blueprint.svg" alt="Rover blueprint illustration" loading="lazy" />
+          <h3>Robotics & Embedded</h3>
+          <p>ROS 2, Nav2, sensor fusion, EKF, watchdog design, LiDAR, GNSS, IMU, Jetson hardware, and embedded reliability.</p>
+        </article>
+        <article class="stack-card reveal">
+          <img src="assets/neural-vision.svg" alt="Neural vision illustration" loading="lazy" />
+          <h3>AI / ML / Vision</h3>
+          <p>YOLOv8, TensorRT FP16, OpenCV, PyTorch on Jetson, fiducials, real-time inference, and perception pipelines.</p>
+        </article>
+        <article class="stack-card reveal">
+          <img src="assets/software-grid.svg" alt="Software grid illustration" loading="lazy" />
+          <h3>Software Engineering</h3>
+          <p>Python, C/C++ fundamentals, asyncio, Linux, Git, GitHub, Flask, WebSockets, algorithms, and data structures.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-pad lab-section">
+      <div class="lab-grid reveal">
+        <div>
+          <p class="eyebrow">Builder philosophy</p>
+          <h2>Proof beats polish. Logs beat guesses.</h2>
+        </div>
+        <div class="lab-copy">
+          <p><strong>Builder before anything else.</strong> I learn by making, breaking, measuring, and rebuilding.</p>
+          <p><strong>Safety is part of intelligence.</strong> A robot is not smart if it cannot fail safely.</p>
+          <p><strong>Every project is a brick.</strong> Reusable code, documented experiments, and systems I can explain end to end.</p>
+          <p><strong>Self-funded means disciplined.</strong> No waste, no fake complexity, no black boxes I cannot debug.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad" id="contact">
+      <div class="contact-shell reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Looking for robotics, AI, or embedded systems teams.</h2>
+          <p>
+            If you are building autonomous systems, perception pipelines, robotics infrastructure, or embedded AI,
+            this is the work I want to be around.
+          </p>
+        </div>
+        <div class="contact-cards">
+          <a href="https://kalikantjha.com" target="_blank" rel="noreferrer">
+            <span>Website</span><strong>kalikantjha.com</strong>
+          </a>
+          <a href="https://github.com/kalikantinfinity" target="_blank" rel="noreferrer">
+            <span>GitHub</span><strong>kalikantinfinity</strong>
+          </a>
+          <a href="https://www.astate.edu/" target="_blank" rel="noreferrer">
+            <span>University</span><strong>Arkansas State University</strong>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> Kalikant Jha. Built for robotics, computer science, and embedded AI.</p>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

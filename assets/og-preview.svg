@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#02080f"/>
+  <circle cx="1040" cy="140" r="260" fill="#20dcff" opacity=".12"/>
+  <circle cx="160" cy="520" r="260" fill="#ff9f1c" opacity=".13"/>
+  <path d="M0 105h1200M0 210h1200M0 315h1200M0 420h1200M0 525h1200M150 0v630M300 0v630M450 0v630M600 0v630M750 0v630M900 0v630M1050 0v630" stroke="#82dbff" opacity=".13"/>
+  <text x="80" y="170" fill="#ff9f1c" font-family="Consolas, monospace" font-size="30">AMDVS • ROBOTICS • EMBEDDED AI</text>
+  <text x="80" y="310" fill="#e8f7ff" font-family="Arial, sans-serif" font-size="86" font-weight="800">Kalikant Jha</text>
+  <text x="80" y="385" fill="#c0d9e8" font-family="Arial, sans-serif" font-size="38">Autonomous rover → LLM support → drone cooperation</text>
+  <rect x="760" y="260" width="280" height="130" rx="26" fill="#06131f" stroke="#20dcff" stroke-width="5"/>
+  <rect x="715" y="285" width="70" height="55" rx="15" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+  <rect x="1015" y="285" width="70" height="55" rx="15" fill="#02080f" stroke="#20dcff" stroke-width="4"/>
+  <circle cx="900" cy="325" r="28" fill="#3cff8f"/>
+  <path d="M1040 325h80" stroke="#ff9f1c" stroke-width="10" stroke-linecap="round"/>
+</svg>
