@@ -1,281 +1,1010 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Kalikant Jha — CS student and robotics builder developing AMDVS, a self-funded autonomous multi-domain vehicle system with ROS 2, Jetson, computer vision, and LLM decision support." />
-  <meta name="theme-color" content="#06131f" />
-  <meta property="og:title" content="Kalikant Jha | Robotics + Embedded AI" />
-  <meta property="og:description" content="Self-funded robotics portfolio for AMDVS: autonomous rover, LLM decision support, and drone docking research." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/og-preview.svg" />
-  <title>Kalikant Jha | Robotics + Embedded AI</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalikant Jha — AMDVS · Autonomous Multi-Domain Vehicle System</title>
+<meta name="description" content="Kalikant Jha (KJ) — building AMDVS, a research-grade autonomous robotics platform. ROS 2, YOLOv8, TensorRT, LiDAR, GNSS/IMU, Jetson. Live autonomy simulation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070a10;
+    --bg-2:#0a0f18;
+    --panel:rgba(150,180,215,0.035);
+    --panel-2:rgba(150,180,215,0.05);
+    --line:rgba(140,170,205,0.12);
+    --line-2:rgba(140,170,205,0.22);
+    --ink:#eef2f7;
+    --ink-2:#c3ccd9;
+    --muted:#7f8ea3;
+    --muted-2:#5f6d81;
+    --green:#4ade80;
+    --green-2:#22c55e;
+    --teal:#2dd4bf;
+    --orange:#f5a524;
+    --orange-2:#fb923c;
+    --cyan:#38bdf8;
+    --violet:#a78bfa;
+    --danger:#ef4444;
+    --grid:rgba(120,150,190,0.055);
+    --shadow:0 30px 80px -40px rgba(0,0,0,0.9);
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --disp:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* deep-space ambient background */
+  .space-bg{position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(900px 600px at 78% -5%, rgba(74,222,128,0.10), transparent 60%),
+      radial-gradient(1100px 700px at 8% 8%, rgba(56,189,248,0.06), transparent 55%),
+      radial-gradient(1000px 900px at 60% 110%, rgba(167,139,250,0.05), transparent 55%),
+      linear-gradient(180deg,#070a10,#080c14 40%,#070a10);
+  }
+  .grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(circle at 50% 30%,black,transparent 85%);
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 32px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--orange);font-weight:500}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- NAV ---------- */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:100;
+    backdrop-filter:blur(14px);
+    background:linear-gradient(180deg,rgba(7,10,16,0.86),rgba(7,10,16,0.55));
+    border-bottom:1px solid transparent;transition:border-color .3s, background .3s}
+  header.nav.scrolled{border-bottom:1px solid var(--line);background:rgba(7,10,16,0.9)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:700;letter-spacing:.12em;font-size:16px}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 0 4px rgba(74,222,128,0.18),0 0 22px 4px rgba(74,222,128,0.75);
+    animation:pulse 2.6s ease-in-out infinite}
+  .brand .slash{color:var(--orange)}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.82);opacity:.7}}
+  nav.links{display:flex;gap:6px}
+  nav.links a{font-size:14px;color:var(--muted);padding:9px 14px;border-radius:9px;transition:color .2s,background .2s;position:relative}
+  nav.links a:hover{color:var(--ink)}
+  nav.links a.active{color:var(--green)}
+  nav.links a.active::after{content:"";position:absolute;left:14px;right:14px;bottom:3px;height:2px;border-radius:2px;background:var(--green);box-shadow:0 0 10px var(--green)}
+  .menu-btn{display:none;background:none;border:1px solid var(--line-2);color:var(--ink);width:42px;height:42px;border-radius:10px;cursor:pointer;align-items:center;justify-content:center}
+  .menu-btn svg{width:20px;height:20px}
+  .mobile-menu{display:none;position:fixed;inset:74px 0 auto 0;z-index:99;background:rgba(8,12,20,0.98);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);flex-direction:column;padding:12px 24px 22px}
+  .mobile-menu a{padding:14px 6px;font-size:16px;color:var(--ink-2);border-bottom:1px solid var(--line)}
+  .mobile-menu a:last-child{border-bottom:none}
+  .mobile-menu.open{display:flex}
+
+  /* ---------- SECTIONS ---------- */
+  section{position:relative;padding:104px 0}
+  .sec-head{max-width:820px}
+  h1,h2,h3{font-family:var(--disp);font-weight:700;letter-spacing:-0.02em;line-height:1.03}
+  .h-xxl{font-size:clamp(46px,8.5vw,95px)}
+  .h-xl{font-size:clamp(38px,5.6vw,72px)}
+  .lead{color:var(--ink-2);font-size:clamp(16px,1.6vw,20px);max-width:620px;margin-top:22px;line-height:1.55}
+
+  /* ---------- HERO ---------- */
+  #mission{padding-top:150px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:52px;align-items:center}
+  .hero-tags{display:flex;align-items:center;gap:14px;margin-bottom:26px;flex-wrap:wrap}
+  .hero-tags .d{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+  .hero-tags span.t{font-family:var(--mono);font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--orange)}
+  .hero-tags .sep{color:var(--muted-2)}
+  .hero h1{margin-bottom:8px}
+  .hero h1 .accent{background:linear-gradient(120deg,var(--green),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13.5px;letter-spacing:.04em;padding:14px 22px;border-radius:11px;cursor:pointer;border:1px solid var(--line-2);
+    display:inline-flex;align-items:center;gap:9px;transition:.2s;background:var(--panel);color:var(--ink)}
+  .btn:hover{border-color:var(--green);transform:translateY(-2px)}
+  .btn.primary{background:linear-gradient(120deg,rgba(74,222,128,0.16),rgba(45,212,191,0.10));border-color:rgba(74,222,128,0.45);color:#d7ffe6}
+  .btn.primary:hover{box-shadow:0 12px 30px -12px rgba(74,222,128,0.5)}
+  .btn .arw{transition:transform .2s}
+  .btn:hover .arw{transform:translateX(3px)}
+
+  /* control surface panel */
+  .panel{background:linear-gradient(160deg,rgba(150,180,215,0.06),rgba(150,180,215,0.015));
+    border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+  .panel-head .title{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2)}
+  .badge{font-family:var(--mono);font-size:11px;letter-spacing:.16em;padding:6px 12px;border-radius:20px;border:1px solid rgba(74,222,128,0.4);color:var(--green);display:inline-flex;align-items:center;gap:7px}
+  .badge .bd{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+  .canvas-hold{position:relative;width:100%}
+  canvas{display:block;width:100%}
+  .cs-foot{display:flex;gap:22px;padding:12px 20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+  .cs-foot b{color:var(--green);font-weight:500}
+
+  /* ---------- MISSION CARDS ---------- */
+  .card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:60px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px;position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+  .card:hover{border-color:var(--line-2);transform:translateY(-3px)}
+  .card .klabel{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);font-weight:500}
+  .card h3{font-size:23px;margin:12px 0 12px}
+  .card p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .bars{display:flex;align-items:flex-end;gap:9px;height:78px;margin-top:22px}
+  .bars .bar{flex:1;background:linear-gradient(180deg,var(--green),rgba(34,197,94,0.35));border-radius:6px 6px 3px 3px;height:20%;transition:height .5s cubic-bezier(.2,.7,.2,1)}
+  .mini-gauge{margin-top:20px}
+
+  /* ---------- SIMULATION ---------- */
+  #simulation{padding-top:60px}
+  .sim-shell{display:grid;grid-template-columns:1.55fr 1fr;gap:22px;margin-top:44px;align-items:stretch}
+  .sim-controls{display:flex;gap:10px;padding:14px 18px;border-top:1px solid var(--line);flex-wrap:wrap;align-items:center}
+  .ctl{font-family:var(--mono);font-size:12.5px;padding:9px 16px;border-radius:9px;border:1px solid var(--line-2);background:rgba(150,180,215,0.04);color:var(--ink-2);cursor:pointer;transition:.18s;display:inline-flex;gap:8px;align-items:center}
+  .ctl:hover{border-color:var(--green);color:var(--ink)}
+  .ctl.estop{border-color:rgba(239,68,68,0.5);color:#ffb4b4}
+  .ctl.estop:hover{background:rgba(239,68,68,0.14);border-color:var(--danger)}
+  .ctl .k{width:8px;height:8px;border-radius:2px;background:var(--green)}
+  .ctl.estop .k{background:var(--danger);border-radius:50%}
+  .telemetry{display:flex;flex-direction:column;gap:16px}
+  .tele-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .tele-card .th{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .tele-card .th b{color:var(--ink);font-weight:500;font-size:15px;letter-spacing:0}
+  /* terminal */
+  .term{padding:14px 16px;font-family:var(--mono);font-size:12.5px;line-height:1.85;height:186px;overflow:hidden}
+  .term .ln{white-space:pre-wrap;word-break:break-word}
+  .term .tag{color:var(--green)}
+  .term .tag.warn{color:var(--orange)}
+  .term .tag.err{color:var(--danger)}
+  .term .dim{color:var(--muted)}
+  .term .cur{display:inline-block;width:8px;height:15px;background:var(--green);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+  .stat-grid .cell{background:var(--bg-2);padding:14px 16px}
+  .stat-grid .cell .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2)}
+  .stat-grid .cell .val{font-family:var(--mono);font-size:22px;color:var(--ink);margin-top:4px}
+  .stat-grid .cell .val small{font-size:12px;color:var(--muted)}
+  .legend{display:flex;gap:18px;padding:12px 18px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted);flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+  /* ---------- PHASES ---------- */
+  .phase-row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+  .phase{background:linear-gradient(165deg,rgba(150,180,215,0.055),rgba(150,180,215,0.012));border:1px solid var(--line);border-radius:20px;padding:30px;transition:.25s;position:relative;overflow:hidden}
+  .phase:hover{transform:translateY(-4px);border-color:var(--line-2)}
+  .phase::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;background:radial-gradient(400px 200px at 50% -10%,var(--pc,rgba(245,165,36,0.14)),transparent 70%)}
+  .phase:hover::before{opacity:1}
+  .pnum{width:56px;height:56px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:19px;color:#0a0f18;margin-bottom:22px}
+  .phase h3{font-size:26px;margin-bottom:14px}
+  .phase p{color:var(--muted);font-size:14.5px;margin-bottom:20px}
+  .phase ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+  .phase li{font-size:14px;color:var(--ink-2);display:flex;gap:11px;align-items:flex-start}
+  .phase li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--dotc,var(--orange));margin-top:8px;flex:0 0 auto;box-shadow:0 0 8px var(--dotc,var(--orange))}
+
+  /* ---------- STACK ---------- */
+  .stack-row{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+  .stack-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s}
+  .stack-card:hover{transform:translateY(-3px);border-color:var(--line-2)}
+  .diag{background:rgba(6,9,15,0.6);border-bottom:1px solid var(--line);padding:16px;position:relative}
+  .diag .dlab{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);z-index:2}
+  .diag .dcap{position:absolute;bottom:14px;left:16px;right:16px;font-family:var(--mono);font-size:10.5px;color:var(--muted);z-index:2}
+  .diag svg,.diag canvas{width:100%;height:200px;display:block}
+  .stack-body{padding:22px 24px 26px}
+  .stack-body h3{font-size:22px;margin-bottom:12px}
+  .stack-body p{color:var(--muted);font-size:14.5px}
+
+  /* ---------- PHILOSOPHY ---------- */
+  .philo{background:linear-gradient(160deg,rgba(150,180,215,0.06),rgba(150,180,215,0.015));border:1px solid var(--line);border-radius:24px;padding:56px;display:grid;grid-template-columns:1fr 1.15fr;gap:52px;align-items:center;box-shadow:var(--shadow)}
+  .philo h2{font-size:clamp(34px,4.4vw,58px)}
+  .philo .list{border-left:2px solid var(--orange);padding-left:28px;display:flex;flex-direction:column;gap:22px}
+  .philo .list p{font-size:16px;color:var(--ink-2)}
+  .philo .list b{color:var(--ink);font-weight:600}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;margin-top:20px;align-items:start}
+  .contact-left h2{font-size:clamp(40px,6vw,78px)}
+  .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .cc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;transition:.22s;min-height:118px;display:flex;flex-direction:column;justify-content:flex-start}
+  .cc:hover{border-color:var(--green);transform:translateY(-3px)}
+  .cc .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .cc .v{font-size:19px;font-weight:600;margin-top:10px;color:var(--ink)}
+  .cc.uni{grid-column:1 / -1}
+  footer{border-top:1px solid var(--line);padding:34px 0;margin-top:60px}
+  .foot-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .foot-inner .c{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .totop{font-family:var(--mono);font-size:13px;color:var(--ink-2);display:inline-flex;gap:8px;align-items:center;cursor:pointer;padding:8px 4px}
+  .totop:hover{color:var(--green)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:960px){
+    nav.links{display:none}
+    .menu-btn{display:inline-flex}
+    .hero-grid{grid-template-columns:1fr;gap:36px}
+    .sim-shell{grid-template-columns:1fr}
+    .card-row,.phase-row,.stack-row{grid-template-columns:1fr}
+    .philo{grid-template-columns:1fr;padding:34px}
+    .contact-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:600px){
+    .wrap{padding:0 20px}
+    section{padding:74px 0}
+    #mission{padding-top:120px}
+    .contact-cards{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{transition:none;opacity:1;transform:none}
+    .brand .dot,.badge .bd{animation:none}
+  }
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+<div class="space-bg"></div>
+<div class="grid-bg"></div>
 
-  <div class="noise" aria-hidden="true"></div>
-  <div class="scanline" aria-hidden="true"></div>
-
-  <header class="site-header" id="top">
-    <nav class="nav-shell" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Kalikant Jha home">
-        <span class="brand-orb"></span>
-        <span>KJ<span class="accent">/</span>AMDVS</span>
-      </a>
-      <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-links" data-nav-links>
-        <a href="#mission">Mission</a>
-        <a href="#amdvs">AMDVS</a>
-        <a href="#simulation">Simulation</a>
-        <a href="#phases">Phases</a>
-        <a href="#stack">Stack</a>
-        <a href="#contact">Contact</a>
-      </div>
+<!-- ================= NAV ================= -->
+<header class="nav" id="topnav">
+  <div class="wrap nav-inner">
+    <a href="#mission" class="brand"><span class="dot"></span>KJ<span class="slash">/</span>AMDVS</a>
+    <nav class="links">
+      <a href="#mission">Mission</a>
+      <a href="#amdvs">AMDVS</a>
+      <a href="#simulation">Simulation</a>
+      <a href="#phases">Phases</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
     </nav>
-  </header>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#mission">Mission</a>
+  <a href="#amdvs">AMDVS</a>
+  <a href="#simulation">Simulation</a>
+  <a href="#phases">Phases</a>
+  <a href="#stack">Stack</a>
+  <a href="#contact">Contact</a>
+</div>
 
-  <main id="main">
-    <section class="hero section-pad" id="mission">
-      <div class="hero-grid">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span class="live-dot"></span> Autonomous systems • Computer vision • Embedded AI</p>
-          <h1>Building robotics software that survives the real world.</h1>
-          <p class="hero-text">
-            I am <strong>Kalikant Jha</strong>, a CS student at Arkansas State University building AMDVS:
-            a self-funded autonomous vehicle platform where ROS 2, Jetson inference, sensor fusion,
-            and LLM decision support meet physical hardware.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#amdvs">Explore AMDVS</a>
-            <a class="btn secondary" href="https://github.com/kalikantinfinity" target="_blank" rel="noreferrer">GitHub</a>
-          </div>
-          <div class="signal-strip" aria-label="Current focus areas">
-            <span>ROS 2</span>
-            <span>YOLOv8</span>
-            <span>TensorRT</span>
-            <span>Nav2</span>
-            <span>Jetson</span>
-            <span>LLM Agents</span>
+<!-- ================= HERO / MISSION ================= -->
+<section id="mission" class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <div class="hero-tags">
+        <span class="d"></span>
+        <span class="t">Autonomous Systems</span><span class="sep">•</span>
+        <span class="t">Computer Vision</span><span class="sep">•</span>
+        <span class="t">Embedded AI</span>
+      </div>
+      <h1 class="h-xxl">Building robotics<br>software that<br><span class="accent">survives the real world.</span></h1>
+      <p class="lead">AMDVS is a self-funded, research-grade autonomous platform — perception, navigation, and a deterministic safety layer built one verified subsystem at a time.</p>
+      <div class="hero-cta">
+        <a href="#simulation" class="btn primary">Run the simulation <span class="arw">→</span></a>
+        <a href="#phases" class="btn">View build plan</a>
+      </div>
+    </div>
+    <div class="reveal panel" id="amdvs" style="scroll-margin-top:90px">
+      <div class="panel-head">
+        <span class="title">AMDVS Control Surface</span>
+        <span class="badge"><span class="bd"></span>ONLINE</span>
+      </div>
+      <div class="canvas-hold"><canvas id="heroCanvas" width="620" height="380"></canvas></div>
+      <div class="cs-foot">
+        <span>PERC <b id="heroFps">30.1</b> fps</span>
+        <span>DET <b id="heroDet">3</b></span>
+        <span>MODE <b>AUTO</b></span>
+        <span>LINK <b>4G / LoRa</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MISSION CARDS ================= -->
+<section style="padding-top:20px">
+  <div class="wrap">
+    <div class="card-row">
+      <div class="reveal card">
+        <span class="klabel">Perception</span>
+        <h3>Real-time detection</h3>
+        <p>YOLOv8 on a Jetson Orin Nano at a verified 30 FPS steady state — TensorRT FP16, CSI capture through jetson-utils, NumPy pinned for stability.</p>
+        <canvas id="nnMini" width="360" height="90" style="margin-top:20px;height:90px"></canvas>
+      </div>
+      <div class="reveal card">
+        <span class="klabel">Safety First</span>
+        <h3>Hardware reflex layer</h3>
+        <p>Emergency stop, watchdog timing, sensor sanity checks, and conservative fallback behaviors are treated as core engineering, not decoration.</p>
+        <div class="bars" id="reflexBars">
+          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
+      </div>
+      <div class="reveal card">
+        <span class="klabel">Architecture</span>
+        <h3>Layered autonomy</h3>
+        <p>Reflex → perception → navigation → strategic reasoning → human interface. The LLM advises; it never touches the real-time control loop.</p>
+        <div class="mini-gauge"><canvas id="estopGauge" width="360" height="120" style="height:120px"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SIMULATION ================= -->
+<section id="simulation">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Interactive Robotics Graphic</span>
+      <h2 class="h-xl" style="margin-top:16px">Live autonomy<br>simulation</h2>
+      <p class="lead">A tracked rover drives itself through a 2D world, sweeping 96 LiDAR rays, building a persistent SLAM point cloud, and drawing YOLO detections in real time. Every control below is live.</p>
+    </div>
+
+    <div class="sim-shell">
+      <div class="reveal panel">
+        <div class="panel-head">
+          <span class="title">World View — SLAM + Perception</span>
+          <span class="badge"><span class="bd"></span><span id="simState">DRIVING</span></span>
+        </div>
+        <div class="canvas-hold"><canvas id="simCanvas" width="760" height="470"></canvas></div>
+        <div class="legend">
+          <span><i style="background:var(--green)"></i>LiDAR return</span>
+          <span><i style="background:var(--cyan)"></i>ray sweep</span>
+          <span><i style="background:var(--orange)"></i>YOLO detection</span>
+          <span><i style="background:#8b5cf6"></i>planned path</span>
+        </div>
+        <div class="sim-controls">
+          <button class="ctl" id="btnPlay"><span class="k"></span><span id="playTxt">Pause</span></button>
+          <button class="ctl" id="btnReset"><span class="k" style="background:var(--cyan)"></span>Reset map</button>
+          <button class="ctl" id="btnRays"><span class="k" style="background:var(--muted)"></span>Rays: on</button>
+          <button class="ctl estop" id="btnEstop"><span class="k"></span>Trigger E-STOP</button>
+        </div>
+      </div>
+
+      <div class="reveal telemetry">
+        <div class="tele-card">
+          <div class="th"><span>Perception FPS</span><b id="fpsNow">30.1</b></div>
+          <canvas id="fpsChart" width="420" height="120" style="height:120px"></canvas>
+        </div>
+        <div class="tele-card">
+          <div class="th"><span>ros2 / jetson · runtime log</span></div>
+          <div class="term" id="terminal"></div>
+        </div>
+        <div class="tele-card">
+          <div class="stat-grid">
+            <div class="cell"><div class="lab">LiDAR points</div><div class="val" id="stPoints">0</div></div>
+            <div class="cell"><div class="lab">Heading</div><div class="val" id="stHead">0<small>°</small></div></div>
+            <div class="cell"><div class="lab">Detections</div><div class="val" id="stDet">0</div></div>
+            <div class="cell"><div class="lab">E-stop latency</div><div class="val" id="stLat">— <small>ms</small></div></div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="hero-visual reveal" aria-label="Animated autonomy dashboard">
-          <div class="hud-card hero-hud">
-            <div class="hud-topline">
-              <span>AMDVS CONTROL SURFACE</span>
-              <span class="status-pill">ONLINE</span>
-            </div>
-            <canvas id="heroCanvas" width="760" height="520" aria-label="Live rover sensor simulation"></canvas>
-            <div class="hud-readouts">
-              <div><span>Perception</span><strong id="readoutFps">30 FPS</strong></div>
-              <div><span>Route</span><strong id="readoutRoute">Stable</strong></div>
-              <div><span>Safety</span><strong id="readoutSafety">Watchdog</strong></div>
-            </div>
-          </div>
+<!-- ================= PHASES ================= -->
+<section id="phases">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Roadmap</span>
+      <h2 class="h-xl" style="margin-top:16px">Three-phase build plan</h2>
+      <p class="lead">The current direction: ground autonomy first, LLM integration second, drone cooperation third.</p>
+    </div>
+    <div class="phase-row">
+      <div class="reveal phase" style="--pc:rgba(245,165,36,0.16);--dotc:var(--orange)">
+        <div class="pnum" style="background:linear-gradient(135deg,#f5a524,#fb923c)">01</div>
+        <h3>Autonomous ground rover</h3>
+        <p>ROS 2, OpenCV, YOLOv8, TensorRT, camera perception, lane following, Nav2, sensor fusion, and safety watchdogs.</p>
+        <ul>
+          <li>Real-time object detection</li>
+          <li>Waypoint navigation</li>
+          <li>LiDAR / GNSS / IMU roadmap</li>
+        </ul>
+      </div>
+      <div class="reveal phase" style="--pc:rgba(45,212,191,0.16);--dotc:var(--teal)">
+        <div class="pnum" style="background:linear-gradient(135deg,#2dd4bf,#4ade80)">02</div>
+        <h3>LLM decision support</h3>
+        <p>A high-level reasoning layer that reads system state, summarizes events, explains failures, and helps choose safe next actions.</p>
+        <ul>
+          <li>Mission memory and logs</li>
+          <li>RAG-style project documentation</li>
+          <li>Human-readable decision reports</li>
+        </ul>
+      </div>
+      <div class="reveal phase" style="--pc:rgba(167,139,250,0.16);--dotc:var(--violet)">
+        <div class="pnum" style="background:linear-gradient(135deg,#a78bfa,#38bdf8)">03</div>
+        <h3>Cooperating drone module</h3>
+        <p>Later expansion: overhead reconnaissance, AprilTag / ArUco docking, and return-to-rover coordination.</p>
+        <ul>
+          <li>Drone launch and return workflow</li>
+          <li>Marker-based precision landing</li>
+          <li>Ground–air coordination</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STACK ================= -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Technical Stack</span>
+      <h2 class="h-xl" style="margin-top:16px">Robotics + CS<br>+ AI skill map</h2>
+    </div>
+    <div class="stack-row">
+      <!-- Robotics blueprint -->
+      <div class="reveal stack-card">
+        <div class="diag">
+          <span class="dlab">Rover Mechanical + Sensor Blueprint</span>
+          <svg viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet">
+            <defs><pattern id="g1" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(120,150,190,0.12)" stroke-width="1"/></pattern></defs>
+            <rect width="360" height="200" fill="url(#g1)"/>
+            <!-- tracks -->
+            <rect x="120" y="66" width="34" height="26" rx="6" fill="none" stroke="#4ade80" stroke-width="2"/>
+            <rect x="120" y="108" width="34" height="26" rx="6" fill="none" stroke="#4ade80" stroke-width="2"/>
+            <rect x="206" y="66" width="34" height="26" rx="6" fill="none" stroke="#4ade80" stroke-width="2"/>
+            <rect x="206" y="108" width="34" height="26" rx="6" fill="none" stroke="#4ade80" stroke-width="2"/>
+            <!-- body -->
+            <rect x="146" y="72" width="68" height="56" rx="16" fill="rgba(74,222,128,0.06)" stroke="#4ade80" stroke-width="2.5"/>
+            <circle cx="180" cy="100" r="9" fill="#4ade80"/>
+            <!-- lidar rays -->
+            <g stroke="#38bdf8" stroke-width="1.4" opacity="0.75">
+              <line x1="214" y1="100" x2="300" y2="70"/>
+              <line x1="214" y1="100" x2="308" y2="100"/>
+              <line x1="214" y1="100" x2="300" y2="130"/>
+            </g>
+            <line x1="214" y1="100" x2="292" y2="100" stroke="#f5a524" stroke-width="2.5" marker-end="url(#ar)"/>
+            <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0L6 3L0 6z" fill="#f5a524"/></marker></defs>
+          </svg>
+          <span class="dcap">camera · lidar · imu · gnss · e-stop · watchdog</span>
         </div>
-      </div>
-    </section>
-
-    <section class="stats-bar reveal" aria-label="Project snapshot">
-      <div><span class="metric">01</span><span>self-funded robotics platform</span></div>
-      <div><span class="metric">30</span><span>FPS on-device vision target</span></div>
-      <div><span class="metric">03</span><span>phases: rover → LLM → drone</span></div>
-      <div><span class="metric">24/7</span><span>builder mindset</span></div>
-    </section>
-
-    <section class="section-pad" id="amdvs">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Flagship project</p>
-        <h2>AMDVS — Autonomous Multi-Domain Vehicle System</h2>
-        <p>
-          A physical AI platform designed around perception, planning, decision support, safety reflexes,
-          and future aerial cooperation. The goal is not a demo that works once — it is a system I can debug,
-          explain, rebuild, and keep improving.
-        </p>
-      </div>
-
-      <div class="project-grid">
-        <article class="feature-card reveal wide-card">
-          <div class="card-kicker">System architecture</div>
-          <h3>From camera pixels to robot action</h3>
-          <p>
-            The rover pipeline turns sensor input into object detections, fused state estimates, navigation commands,
-            and safety decisions. Phase 2 adds LLM-based reasoning as a decision-support layer, not as the only control brain.
-          </p>
-          <div class="architecture" aria-label="AMDVS architecture diagram">
-            <div class="arch-node camera">Camera<br><small>CSI / USB</small></div>
-            <div class="arch-line"></div>
-            <div class="arch-node vision">Vision AI<br><small>YOLO + TensorRT</small></div>
-            <div class="arch-line"></div>
-            <div class="arch-node ros">ROS 2<br><small>Topics + Nodes</small></div>
-            <div class="arch-line"></div>
-            <div class="arch-node nav">Nav2 / EKF<br><small>Path + State</small></div>
-            <div class="arch-line"></div>
-            <div class="arch-node action">Rover<br><small>Motion + Safety</small></div>
-          </div>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="card-kicker">Compute</div>
-          <h3>Jetson Orin Nano Super</h3>
-          <p>Edge compute for camera inference, ROS 2 processing, and robotics experiments without depending only on cloud processing.</p>
-          <div class="chip-list"><span>CUDA</span><span>TensorRT</span><span>Ubuntu</span><span>JetPack</span></div>
-        </article>
-
-        <article class="feature-card reveal">
-          <div class="card-kicker">Safety first</div>
-          <h3>Hardware reflex layer</h3>
-          <p>Emergency stop, watchdog timing, sensor sanity checks, and conservative fallback behaviors are treated as core engineering, not decoration.</p>
-          <div class="pulse-meter"><span></span><span></span><span></span><span></span><span></span></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-pad simulation-section" id="simulation">
-      <div class="section-heading reveal compact">
-        <p class="eyebrow">Interactive robotics graphic</p>
-        <h2>Live autonomy simulation</h2>
-        <p>
-          This canvas gives the homepage motion: a rover, perception rays, obstacle detections, route planning,
-          and a decision-support overlay. It makes the page feel like robotics instead of a plain resume.
-        </p>
-      </div>
-
-      <div class="sim-layout reveal">
-        <div class="hud-card sim-card">
-          <div class="hud-topline">
-            <span>SIM / SENSOR FUSION</span>
-            <span class="status-pill cyan">RUNNING</span>
-          </div>
-          <canvas id="simCanvas" width="980" height="560" aria-label="Interactive robot simulation"></canvas>
-        </div>
-        <aside class="sim-panel" aria-label="Simulation controls">
-          <h3>Mission Console</h3>
-          <p id="consoleText">Rover is scanning, choosing a safe route, and reporting high-level reasoning.</p>
-          <button class="console-btn" type="button" data-sim-mode="normal">Normal Route</button>
-          <button class="console-btn" type="button" data-sim-mode="obstacle">Add Obstacle Event</button>
-          <button class="console-btn" type="button" data-sim-mode="llm">Show LLM Layer</button>
-          <div class="console-log" id="consoleLog" aria-live="polite"></div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section-pad" id="phases">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Roadmap</p>
-        <h2>Three-phase build plan</h2>
-        <p>The current direction reflects the upgraded phase order: ground autonomy first, LLM integration second, drone cooperation third.</p>
-      </div>
-
-      <div class="phase-timeline">
-        <article class="phase-card reveal active">
-          <span class="phase-number">01</span>
-          <h3>Autonomous ground rover</h3>
-          <p>ROS 2, OpenCV, YOLOv8, TensorRT, camera perception, lane following, Nav2, sensor fusion, and safety watchdogs.</p>
-          <ul>
-            <li>Real-time object detection</li>
-            <li>Waypoint navigation</li>
-            <li>LiDAR / GNSS / IMU roadmap</li>
-          </ul>
-        </article>
-        <article class="phase-card reveal">
-          <span class="phase-number">02</span>
-          <h3>LLM decision support</h3>
-          <p>High-level reasoning layer that reads system state, summarizes events, explains failures, and helps choose safe next actions.</p>
-          <ul>
-            <li>Mission memory and logs</li>
-            <li>RAG-style project documentation</li>
-            <li>Human-readable decision reports</li>
-          </ul>
-        </article>
-        <article class="phase-card reveal">
-          <span class="phase-number">03</span>
-          <h3>Cooperating drone module</h3>
-          <p>Later expansion: overhead reconnaissance, AprilTag/ArUco docking, and return-to-rover coordination.</p>
-          <ul>
-            <li>Drone launch and return workflow</li>
-            <li>Marker-based precision landing</li>
-            <li>Ground-air coordination</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-pad" id="stack">
-      <div class="section-heading reveal compact">
-        <p class="eyebrow">Technical stack</p>
-        <h2>Robotics + CS + AI skill map</h2>
-      </div>
-      <div class="stack-grid">
-        <article class="stack-card reveal">
-          <img src="assets/rover-blueprint.svg" alt="Rover blueprint illustration" loading="lazy" />
-          <h3>Robotics & Embedded</h3>
+        <div class="stack-body">
+          <h3>Robotics &amp; Embedded</h3>
           <p>ROS 2, Nav2, sensor fusion, EKF, watchdog design, LiDAR, GNSS, IMU, Jetson hardware, and embedded reliability.</p>
-        </article>
-        <article class="stack-card reveal">
-          <img src="assets/neural-vision.svg" alt="Neural vision illustration" loading="lazy" />
+        </div>
+      </div>
+      <!-- Vision pipeline (animated NN) -->
+      <div class="reveal stack-card">
+        <div class="diag">
+          <span class="dlab">Vision AI Pipeline</span>
+          <canvas id="nnBig" width="360" height="200"></canvas>
+          <span class="dcap">YOLOv8 → TensorRT FP16 → detections → ROS 2 topics</span>
+        </div>
+        <div class="stack-body">
           <h3>AI / ML / Vision</h3>
           <p>YOLOv8, TensorRT FP16, OpenCV, PyTorch on Jetson, fiducials, real-time inference, and perception pipelines.</p>
-        </article>
-        <article class="stack-card reveal">
-          <img src="assets/software-grid.svg" alt="Software grid illustration" loading="lazy" />
+        </div>
+      </div>
+      <!-- Software eng graph -->
+      <div class="reveal stack-card">
+        <div class="diag">
+          <span class="dlab">Software Engineering System</span>
+          <svg viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet">
+            <g stroke="rgba(140,170,205,0.35)" stroke-width="1.4" fill="none">
+              <line x1="80" y1="70" x2="180" y2="70"/><line x1="180" y1="70" x2="280" y2="70"/>
+              <line x1="80" y1="130" x2="180" y2="130"/><line x1="180" y1="130" x2="280" y2="130"/>
+              <line x1="80" y1="70" x2="80" y2="130"/><line x1="180" y1="70" x2="180" y2="130"/><line x1="280" y1="70" x2="280" y2="130"/>
+            </g>
+            <g font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" text-anchor="middle">
+              <g><rect x="42" y="55" width="76" height="30" rx="8" fill="rgba(56,189,248,0.08)" stroke="#38bdf8" stroke-width="1.6"/><text x="80" y="74" fill="#bfe6ff">Python</text></g>
+              <g><rect x="142" y="55" width="76" height="30" rx="8" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.6"/><text x="180" y="74" fill="#c9ffdc">ROS 2</text></g>
+              <g><rect x="242" y="55" width="76" height="30" rx="8" fill="rgba(245,165,36,0.08)" stroke="#f5a524" stroke-width="1.6"/><text x="280" y="74" fill="#ffe2b0">Linux</text></g>
+              <g><rect x="42" y="115" width="76" height="30" rx="8" fill="rgba(245,165,36,0.08)" stroke="#f5a524" stroke-width="1.6"/><text x="80" y="134" fill="#ffe2b0">C / C++</text></g>
+              <g><rect x="142" y="115" width="76" height="30" rx="8" fill="rgba(74,222,128,0.08)" stroke="#4ade80" stroke-width="1.6"/><text x="180" y="134" fill="#c9ffdc">Git</text></g>
+              <g><rect x="242" y="115" width="76" height="30" rx="8" fill="rgba(167,139,250,0.08)" stroke="#a78bfa" stroke-width="1.6"/><text x="280" y="134" fill="#ddd0ff">Agents</text></g>
+            </g>
+          </svg>
+          <span class="dcap">versioned · testable · explainable · rebuildable</span>
+        </div>
+        <div class="stack-body">
           <h3>Software Engineering</h3>
           <p>Python, C/C++ fundamentals, asyncio, Linux, Git, GitHub, Flask, WebSockets, algorithms, and data structures.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-pad lab-section">
-      <div class="lab-grid reveal">
-        <div>
-          <p class="eyebrow">Builder philosophy</p>
-          <h2>Proof beats polish. Logs beat guesses.</h2>
-        </div>
-        <div class="lab-copy">
-          <p><strong>Builder before anything else.</strong> I learn by making, breaking, measuring, and rebuilding.</p>
-          <p><strong>Safety is part of intelligence.</strong> A robot is not smart if it cannot fail safely.</p>
-          <p><strong>Every project is a brick.</strong> Reusable code, documented experiments, and systems I can explain end to end.</p>
-          <p><strong>Self-funded means disciplined.</strong> No waste, no fake complexity, no black boxes I cannot debug.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <section class="section-pad" id="contact">
-      <div class="contact-shell reveal">
-        <div>
-          <p class="eyebrow">Contact</p>
-          <h2>Looking for robotics, AI, or embedded systems teams.</h2>
-          <p>
-            If you are building autonomous systems, perception pipelines, robotics infrastructure, or embedded AI,
-            this is the work I want to be around.
-          </p>
-        </div>
-        <div class="contact-cards">
-          <a href="https://kalikantjha.com" target="_blank" rel="noreferrer">
-            <span>Website</span><strong>kalikantjha.com</strong>
-          </a>
-          <a href="https://github.com/kalikantininfinity" target="_blank" rel="noreferrer">
-            <span>GitHub</span><strong>kalikantininfinity</strong>
-          </a>
-          <a href="https://www.astate.edu/" target="_blank" rel="noreferrer">
-            <span>University</span><strong>Arkansas State University</strong>
-          </a>
-        </div>
+<!-- ================= PHILOSOPHY ================= -->
+<section style="padding-top:40px">
+  <div class="wrap">
+    <div class="reveal philo">
+      <div>
+        <span class="eyebrow">Builder Philosophy</span>
+        <h2 style="margin-top:18px">Proof beats polish.<br>Logs beat guesses.</h2>
       </div>
-    </section>
-  </main>
+      <div class="list">
+        <p><b>Builder before anything else.</b> I learn by making, breaking, measuring, and rebuilding.</p>
+        <p><b>Safety is part of intelligence.</b> A robot is not smart if it cannot fail safely.</p>
+        <p><b>Every project is a brick.</b> Reusable code, documented experiments, and systems I can explain end to end.</p>
+        <p><b>Self-funded means disciplined.</b> No waste, no fake complexity, no black boxes I cannot debug.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <footer class="site-footer">
-    <p>© <span id="year"></span> Kalikant Jha. Built for robotics, computer science, and embedded AI.</p>
-    <a href="#top">Back to top ↑</a>
-  </footer>
+<!-- ================= CONTACT ================= -->
+<section id="contact" style="padding-bottom:20px">
+  <div class="wrap contact-grid">
+    <div class="reveal contact-left">
+      <span class="eyebrow">Contact</span>
+      <h2 style="margin-top:16px">Looking for robotics, AI, or embedded systems teams.</h2>
+      <p class="lead">If you are building autonomous systems, perception pipelines, robotics infrastructure, or embedded AI, this is the work I want to be around.</p>
+    </div>
+    <div class="reveal contact-cards">
+      <a class="cc" href="https://kalikantjha.com" target="_blank" rel="noopener">
+        <span class="lab">Website</span><span class="v">kalikantjha.com</span>
+      </a>
+      <a class="cc" href="https://github.com/kalikantininfinity" target="_blank" rel="noopener">
+        <span class="lab">GitHub</span><span class="v">kalikantininfinity</span>
+      </a>
+      <div class="cc uni">
+        <span class="lab">University</span><span class="v">Arkansas State University</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js"></script>
+<footer>
+  <div class="wrap foot-inner">
+    <span class="c">© 2026 Kalikant Jha. Built for robotics, computer science, and embedded AI.</span>
+    <a class="totop" href="#mission">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- NAV: scrolled state, mobile menu, active link ---------- */
+const nav = document.getElementById('topnav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 12), {passive:true});
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+const navLinks = [...document.querySelectorAll('nav.links a')];
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const id = '#' + e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+    }
+  });
+}, {rootMargin:'-45% 0px -50% 0px'});
+sections.forEach(s => spy.observe(s));
+
+/* ---------- reveal on scroll ---------- */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); revObs.unobserve(e.target); } });
+}, {threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+/* ---------- helpers: HiDPI canvas ---------- */
+function fitCanvas(cv){
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const r = cv.getBoundingClientRect();
+  cv.width = Math.max(1, Math.round(r.width * dpr));
+  cv.height = Math.max(1, Math.round(r.height * dpr));
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  return {ctx, w:r.width, h:r.height};
+}
+
+/* =========================================================
+   MAIN AUTONOMY SIMULATION
+========================================================= */
+(function(){
+  const cv = document.getElementById('simCanvas');
+  let {ctx, w, h} = fitCanvas(cv);
+  addEventListener('resize', () => ({ctx, w, h} = fitCanvas(cv)));
+
+  // world obstacles (some labeled -> YOLO)
+  function buildWorld(){
+    return [
+      {t:'circle', x:0.20, y:0.30, r:16, label:'cone',   conf:0.91, col:'#f5a524'},
+      {t:'circle', x:0.78, y:0.24, r:19, label:'person', conf:0.94, col:'#4ade80'},
+      {t:'rect',   x:0.60, y:0.62, rw:70, rh:40, label:'box', conf:0.87, col:'#38bdf8'},
+      {t:'circle', x:0.34, y:0.74, r:15, label:'cone',   conf:0.88, col:'#f5a524'},
+      {t:'rect',   x:0.10, y:0.58, rw:26, rh:96, label:null, col:'#5f6d81'},
+      {t:'rect',   x:0.86, y:0.60, rw:26, rh:110, label:null, col:'#5f6d81'},
+    ];
+  }
+  let obstacles = buildWorld();
+
+  // rover + waypoints (normalized), loops
+  const wpN = [ [0.28,0.5],[0.5,0.32],[0.7,0.46],[0.62,0.72],[0.42,0.62],[0.24,0.72],[0.18,0.44] ];
+  const rover = {x:0, y:0, hd:0, sp:0, wp:0};
+  let slam = []; const SLAM_MAX = 1600;
+  let running = true, showRays = true;
+  let estop = {active:false, until:0, lat:0};
+  let dets = 0;
+
+  function px(nx){ return nx*w; } function py(ny){ return ny*h; }
+  function resetRover(){ rover.x = px(wpN[0][0]); rover.y = py(wpN[0][1]); rover.hd = 0; rover.wp = 1; }
+  resetRover();
+
+  function obstHit(x,y){
+    for(const o of obstacles){
+      if(o.t==='circle'){ const ox=px(o.x),oy=py(o.y); if((x-ox)**2+(y-oy)**2 < o.r*o.r) return true; }
+      else { const ox=px(o.x),oy=py(o.y); if(x>ox-o.rw/2 && x<ox+o.rw/2 && y>oy-o.rh/2 && y<oy+o.rh/2) return true; }
+    }
+    return false;
+  }
+  // march a ray, return distance + hit point (also stops at world edge)
+  function cast(ox,oy,ang,maxR){
+    const st=3, dx=Math.cos(ang), dy=Math.sin(ang);
+    for(let d=8; d<maxR; d+=st){
+      const x=ox+dx*d, y=oy+dy*d;
+      if(x<2||y<2||x>w-2||y>h-2) return {d, x:Math.max(2,Math.min(w-2,x)), y:Math.max(2,Math.min(h-2,y)), hit:true};
+      if(obstHit(x,y)) return {d, x, y, hit:true};
+    }
+    return {d:maxR, x:ox+dx*maxR, y:oy+dy*maxR, hit:false};
+  }
+
+  const RAYS = 96, MAXR = 230, FOV = 0.62; // ~35deg half
+  let frame = 0;
+
+  function step(dt){
+    frame++;
+    // ---- steering toward waypoint with mild avoidance ----
+    const tx = px(wpN[rover.wp][0]), ty = py(wpN[rover.wp][1]);
+    let desired = Math.atan2(ty-rover.y, tx-rover.x);
+    // forward clearance from three probe rays
+    const cL = cast(rover.x, rover.y, rover.hd-0.35, 90).d;
+    const cC = cast(rover.x, rover.y, rover.hd, 90).d;
+    const cR = cast(rover.x, rover.y, rover.hd+0.35, 90).d;
+    if(cC < 55){ desired += (cL > cR ? -0.9 : 0.9); }
+    // turn limited
+    let diff = ((desired - rover.hd + Math.PI*3) % (Math.PI*2)) - Math.PI;
+    const targetHd = rover.hd + Math.max(-0.05, Math.min(0.05, diff));
+    const targetSp = estop.active ? 0 : (cC < 34 ? 0.35 : 1.35);
+    rover.hd += (targetHd - rover.hd);
+    rover.sp += (targetSp - rover.sp) * 0.12;
+    rover.x += Math.cos(rover.hd) * rover.sp;
+    rover.y += Math.sin(rover.hd) * rover.sp;
+    // waypoint advance
+    if((rover.x-tx)**2 + (rover.y-ty)**2 < 26*26){ rover.wp = (rover.wp+1) % wpN.length; }
+    if(estop.active && performance.now() > estop.until) estop.active = false;
+
+    // ---- LiDAR sweep + SLAM accumulation ----
+    for(let i=0;i<RAYS;i++){
+      const a = (i/RAYS)*Math.PI*2;
+      const hit = cast(rover.x, rover.y, a, MAXR);
+      if(hit.hit && (frame % 2 === 0) && i % 2 === 0){
+        slam.push({x:hit.x + (Math.random()-0.5)*2, y:hit.y + (Math.random()-0.5)*2, a:1});
+      }
+    }
+    if(slam.length > SLAM_MAX) slam.splice(0, slam.length - SLAM_MAX);
+  }
+
+  function drawWorld(){
+    // grid
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle='rgba(120,150,190,0.06)'; ctx.lineWidth=1;
+    for(let x=0;x<w;x+=32){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke(); }
+    for(let y=0;y<h;y+=32){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke(); }
+
+    // planned path (waypoints)
+    ctx.strokeStyle='rgba(139,92,246,0.55)'; ctx.lineWidth=1.6; ctx.setLineDash([6,7]);
+    ctx.beginPath();
+    for(let i=0;i<=wpN.length;i++){ const p=wpN[i%wpN.length]; const X=px(p[0]),Y=py(p[1]); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }
+    ctx.stroke(); ctx.setLineDash([]);
+    for(const p of wpN){ ctx.fillStyle='rgba(139,92,246,0.6)'; ctx.beginPath(); ctx.arc(px(p[0]),py(p[1]),2.6,0,7); ctx.fill(); }
+
+    // obstacles (faint fills; contours will be drawn by SLAM)
+    for(const o of obstacles){
+      ctx.fillStyle='rgba(95,109,129,0.14)'; ctx.strokeStyle='rgba(120,140,170,0.35)'; ctx.lineWidth=1;
+      if(o.t==='circle'){ ctx.beginPath(); ctx.arc(px(o.x),py(o.y),o.r,0,7); ctx.fill(); }
+      else { ctx.fillRect(px(o.x)-o.rw/2,py(o.y)-o.rh/2,o.rw,o.rh); }
+    }
+
+    // SLAM point cloud
+    for(const p of slam){ ctx.fillStyle='rgba(74,222,128,'+(0.5*p.a)+')'; ctx.fillRect(p.x-1,p.y-1,2,2); }
+
+    // LiDAR rays (thin sweep) — draw subset for clarity
+    if(showRays){
+      ctx.lineWidth=1;
+      for(let i=0;i<RAYS;i+=2){
+        const a=(i/RAYS)*Math.PI*2; const hit=cast(rover.x,rover.y,a,MAXR);
+        const inFov = Math.abs(((a - rover.hd + Math.PI*3)%(Math.PI*2))-Math.PI) < FOV;
+        ctx.strokeStyle = inFov ? 'rgba(56,189,248,0.28)' : 'rgba(56,189,248,0.10)';
+        ctx.beginPath(); ctx.moveTo(rover.x,rover.y); ctx.lineTo(hit.x,hit.y); ctx.stroke();
+        ctx.fillStyle='rgba(74,222,128,0.9)'; ctx.beginPath(); ctx.arc(hit.x,hit.y,1.4,0,7); ctx.fill();
+      }
+    }
+
+    // camera FOV cone
+    ctx.fillStyle='rgba(56,189,248,0.05)';
+    ctx.beginPath(); ctx.moveTo(rover.x,rover.y);
+    ctx.arc(rover.x,rover.y,MAXR,rover.hd-FOV,rover.hd+FOV); ctx.closePath(); ctx.fill();
+
+    // YOLO detections in FOV
+    dets = 0;
+    for(const o of obstacles){
+      if(!o.label) continue;
+      const ox=px(o.x),oy=py(o.y);
+      const dist=Math.hypot(ox-rover.x,oy-rover.y);
+      let ang=Math.atan2(oy-rover.y,ox-rover.x);
+      let rel=Math.abs(((ang-rover.hd+Math.PI*3)%(Math.PI*2))-Math.PI);
+      if(dist<MAXR+10 && rel<FOV+0.12){
+        dets++;
+        const bw = (o.t==='circle'? o.r*2 : o.rw)+12, bh=(o.t==='circle'? o.r*2 : o.rh)+12;
+        ctx.strokeStyle=o.col; ctx.lineWidth=2; ctx.strokeRect(ox-bw/2,oy-bh/2,bw,bh);
+        const lab=o.label+' '+o.conf.toFixed(2);
+        ctx.font="600 11px 'JetBrains Mono',monospace";
+        const lw=ctx.measureText(lab).width+12;
+        ctx.fillStyle=o.col; ctx.fillRect(ox-bw/2, oy-bh/2-16, lw, 16);
+        ctx.fillStyle='#08101a'; ctx.fillText(lab, ox-bw/2+6, oy-bh/2-4.5);
+      }
+    }
+
+    // rover body
+    ctx.save(); ctx.translate(rover.x,rover.y); ctx.rotate(rover.hd);
+    const bodyCol = estop.active ? '#ef4444' : '#4ade80';
+    ctx.fillStyle='rgba(10,16,24,0.9)'; ctx.strokeStyle=bodyCol; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(-14,-11,28,22,5); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='rgba(120,140,170,0.6)';
+    ctx.fillRect(-14,-15,28,4); ctx.fillRect(-14,11,28,4); // tracks
+    ctx.fillStyle=bodyCol; ctx.beginPath(); ctx.arc(0,0,4,0,7); ctx.fill();
+    ctx.strokeStyle=bodyCol; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(16,0); ctx.stroke();
+    ctx.restore();
+
+    if(estop.active){
+      ctx.strokeStyle='rgba(239,68,68,0.9)'; ctx.lineWidth=3; ctx.strokeRect(2,2,w-4,h-4);
+      ctx.fillStyle='#ef4444'; ctx.font="700 13px 'JetBrains Mono',monospace";
+      ctx.fillText('E-STOP ENGAGED', 14, 26);
+    }
+  }
+
+  let last=performance.now(), acc=0;
+  function loop(now){
+    const dt=Math.min(50, now-last); last=now;
+    if(running){ step(dt); }
+    drawWorld();
+    // telemetry text
+    document.getElementById('stPoints').textContent = slam.length;
+    document.getElementById('stHead').innerHTML = Math.round(((rover.hd*180/Math.PI)%360+360)%360)+'<small>°</small>';
+    document.getElementById('stDet').textContent = dets;
+    document.getElementById('simState').textContent = estop.active ? 'STOPPED' : (running?'DRIVING':'PAUSED');
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // ---- controls ----
+  document.getElementById('btnPlay').addEventListener('click', e => {
+    running=!running; document.getElementById('playTxt').textContent = running?'Pause':'Play';
+  });
+  document.getElementById('btnReset').addEventListener('click', () => { slam=[]; obstacles=buildWorld(); resetRover(); });
+  document.getElementById('btnRays').addEventListener('click', e => {
+    showRays=!showRays; e.currentTarget.childNodes[1].textContent = ' Rays: '+(showRays?'on':'off');
+  });
+  document.getElementById('btnEstop').addEventListener('click', () => {
+    const lat = 34 + Math.random()*14; // measured latency ms (<50ms target)
+    estop = {active:true, until:performance.now()+1500, lat};
+    document.getElementById('stLat').innerHTML = lat.toFixed(0)+' <small>ms</small>';
+    window.__estopLat = lat; window.__estopFlash = performance.now();
+    pushLog('err','[safe]','E-STOP engaged · relay open · '+lat.toFixed(0)+'ms latency');
+  });
+})();
+
+/* =========================================================
+   HERO MINI CONTROL SURFACE
+========================================================= */
+(function(){
+  const cv=document.getElementById('heroCanvas');
+  let {ctx,w,h}=fitCanvas(cv);
+  addEventListener('resize',()=>({ctx,w,h}=fitCanvas(cv)));
+  let t=0;
+  const targets=[{x:0.62,y:0.4,label:'cone',c:0.91,col:'#f5a524'},{x:0.3,y:0.66,label:'person',c:0.88,col:'#4ade80'}];
+  function frame(){
+    t+=0.016;
+    ctx.clearRect(0,0,w,h);
+    ctx.strokeStyle='rgba(120,150,190,0.07)';ctx.lineWidth=1;
+    for(let x=0;x<w;x+=28){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+    for(let y=0;y<h;y+=28){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+    // dashed path
+    ctx.strokeStyle='rgba(74,222,128,0.55)';ctx.setLineDash([6,7]);ctx.lineWidth=1.8;
+    ctx.beginPath();
+    for(let i=0;i<=40;i++){const p=i/40;const X=w*(0.12+p*0.78);const Y=h*(0.75-Math.sin(p*3.1)*0.28);i?ctx.lineTo(X,Y):ctx.moveTo(X,Y);}
+    ctx.stroke();ctx.setLineDash([]);
+    // moving dot on path
+    const pp=(Math.sin(t*0.6)*0.5+0.5);
+    const dX=w*(0.12+pp*0.78),dY=h*(0.75-Math.sin(pp*3.1)*0.28);
+    ctx.fillStyle='#4ade80';ctx.beginPath();ctx.arc(dX,dY,5,0,7);ctx.fill();
+    ctx.shadowColor='#4ade80';ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+    // detection boxes (pulsing)
+    targets.forEach((o,i)=>{
+      const bx=w*o.x,by=h*o.y,s=44+Math.sin(t*2+i)*3;
+      ctx.strokeStyle=o.col;ctx.lineWidth=2;ctx.strokeRect(bx-s/2,by-s/2,s,s);
+      const lab=o.label+' '+Math.round((o.c+Math.sin(t*1.5+i)*0.03)*100)+'%';
+      ctx.font="600 11px 'JetBrains Mono',monospace";const lw=ctx.measureText(lab).width+10;
+      ctx.fillStyle=o.col;ctx.fillRect(bx-s/2,by-s/2-15,lw,15);
+      ctx.fillStyle='#08101a';ctx.fillText(lab,bx-s/2+5,by-s/2-4);
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* =========================================================
+   LIVE PERCEPTION FPS CHART
+========================================================= */
+(function(){
+  const cv=document.getElementById('fpsChart');
+  let {ctx,w,h}=fitCanvas(cv);
+  addEventListener('resize',()=>({ctx,w,h}=fitCanvas(cv)));
+  const N=70; const data=Array(N).fill(30.1);
+  function sample(){
+    let base=30.1+ (Math.random()-0.5)*0.8;
+    if(window.__estopFlash && performance.now()-window.__estopFlash<1400) base=24+Math.random()*2;
+    data.push(base); if(data.length>N) data.shift();
+    document.getElementById('fpsNow').textContent=base.toFixed(1);
+    document.getElementById('heroFps').textContent=base.toFixed(1);
+  }
+  setInterval(sample, 200);
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const min=22,max=33;
+    // grid line at 30
+    const y30=h-((30-min)/(max-min))*h;
+    ctx.strokeStyle='rgba(120,150,190,0.14)';ctx.lineWidth=1;ctx.setLineDash([4,5]);
+    ctx.beginPath();ctx.moveTo(0,y30);ctx.lineTo(w,y30);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(127,142,163,0.7)';ctx.font="10px 'JetBrains Mono',monospace";ctx.fillText('30',4,y30-4);
+    // area + line
+    ctx.beginPath();
+    data.forEach((v,i)=>{const x=i/(N-1)*w;const y=h-((v-min)/(max-min))*h;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});
+    const grad=ctx.createLinearGradient(0,0,0,h);grad.strokeStyle='#4ade80';
+    ctx.strokeStyle='#4ade80';ctx.lineWidth=2;ctx.stroke();
+    ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
+    const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(74,222,128,0.22)');g.addColorStop(1,'rgba(74,222,128,0)');
+    ctx.fillStyle=g;ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* =========================================================
+   E-STOP LATENCY GAUGE (mission card)
+========================================================= */
+(function(){
+  const cv=document.getElementById('estopGauge');
+  let {ctx,w,h}=fitCanvas(cv);
+  addEventListener('resize',()=>({ctx,w,h}=fitCanvas(cv)));
+  let val=42, shown=42;
+  function draw(){
+    const target = window.__estopLat || 42;
+    shown += (target - shown)*0.08;
+    const flash = window.__estopFlash && performance.now()-window.__estopFlash<1400;
+    ctx.clearRect(0,0,w,h);
+    const cx=w/2, cy=h-8, R=Math.min(w/2-14,h-26);
+    // arc track
+    ctx.lineWidth=10;ctx.lineCap='round';
+    ctx.strokeStyle='rgba(120,150,190,0.14)';
+    ctx.beginPath();ctx.arc(cx,cy,R,Math.PI,0);ctx.stroke();
+    // value arc (0..80ms mapped)
+    const frac=Math.min(1,shown/80);
+    const col = shown<50 ? '#4ade80' : '#ef4444';
+    ctx.strokeStyle=col;ctx.beginPath();ctx.arc(cx,cy,R,Math.PI,Math.PI+frac*Math.PI);ctx.stroke();
+    // 50ms threshold tick
+    const ta=Math.PI+(50/80)*Math.PI;
+    ctx.strokeStyle='rgba(245,165,36,0.8)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(cx+Math.cos(ta)*(R-9),cy+Math.sin(ta)*(R-9));ctx.lineTo(cx+Math.cos(ta)*(R+9),cy+Math.sin(ta)*(R+9));ctx.stroke();
+    // readout
+    ctx.fillStyle=flash?'#ef4444':'#eef2f7';ctx.textAlign='center';
+    ctx.font="700 26px 'JetBrains Mono',monospace";ctx.fillText(shown.toFixed(0),cx,cy-8);
+    ctx.fillStyle='#7f8ea3';ctx.font="10px 'JetBrains Mono',monospace";
+    ctx.fillText('E-STOP LATENCY ms · target <50',cx,cy+12);ctx.textAlign='left';
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* =========================================================
+   REFLEX BARS animate
+========================================================= */
+(function(){
+  const bars=[...document.querySelectorAll('#reflexBars .bar')];
+  const targets=[35,60,45,100,72,55];
+  function tick(){
+    bars.forEach((b,i)=>{ const jitter=(Math.random()-0.5)*10; b.style.height=Math.max(15,Math.min(100,targets[i]+jitter))+'%'; });
+  }
+  tick(); if(!REDUCED) setInterval(tick, 900);
+})();
+
+/* =========================================================
+   NEURAL FORWARD-PASS (mini in perception card + big in stack)
+========================================================= */
+function neuralNet(canvasId, layers, opts){
+  const cv=document.getElementById(canvasId); if(!cv) return;
+  let {ctx,w,h}=fitCanvas(cv);
+  addEventListener('resize',()=>({ctx,w,h}=fitCanvas(cv)));
+  const cols=layers.length; const nodes=[];
+  function layout(){
+    nodes.length=0;
+    for(let c=0;c<cols;c++){
+      const n=layers[c]; const x=(c+1)/(cols+1)*w; const arr=[];
+      for(let i=0;i<n;i++){ const y=(i+1)/(n+1)*h; arr.push({x,y}); }
+      nodes.push(arr);
+    }
+  }
+  layout(); addEventListener('resize',layout);
+  let pulses=[];
+  function spawn(){
+    for(let c=0;c<cols-1;c++){
+      const a=nodes[c][Math.floor(Math.random()*nodes[c].length)];
+      const b=nodes[c+1][Math.floor(Math.random()*nodes[c+1].length)];
+      pulses.push({a,b,t:0,sp:0.02+Math.random()*0.02});
+    }
+  }
+  if(!REDUCED) setInterval(spawn, 520); spawn();
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    // edges
+    ctx.strokeStyle='rgba(120,150,190,0.16)';ctx.lineWidth=1;
+    for(let c=0;c<cols-1;c++) for(const a of nodes[c]) for(const b of nodes[c+1]){ ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke(); }
+    // pulses
+    pulses.forEach(p=>{ p.t+=p.sp; const x=p.a.x+(p.b.x-p.a.x)*p.t, y=p.a.y+(p.b.y-p.a.y)*p.t;
+      ctx.fillStyle=opts.pulse;ctx.beginPath();ctx.arc(x,y,2.6,0,7);ctx.fill();
+      ctx.shadowColor=opts.pulse;ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0; });
+    pulses=pulses.filter(p=>p.t<1);
+    // nodes
+    nodes.forEach((col,ci)=>col.forEach(nd=>{
+      ctx.fillStyle=ci===0?'#38bdf8':(ci===cols-1?'#f5a524':'#4ade80');
+      ctx.beginPath();ctx.arc(nd.x,nd.y,opts.r||4.5,0,7);ctx.fill();
+    }));
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+neuralNet('nnMini',[3,4,4,3],{pulse:'#4ade80',r:3.2});
+neuralNet('nnBig',[3,5,5,3],{pulse:'#4ade80',r:5});
+
+/* =========================================================
+   RUNTIME TERMINAL
+========================================================= */
+const termEl=document.getElementById('terminal');
+const bootLog=[
+  ['dim','[boot]','L4T R36.4.7 · JetPack 6.2 · CUDA 12.6'],
+  ['ok','[cam0]','IMX219 160° @ 1280x720 CSI ... OK'],
+  ['ok','[trt] ','yolov8n FP16 engine loaded'],
+  ['ok','[perc]','steady-state 30.1 FPS'],
+  ['dim','[imu] ','EKF fused · heading lock'],
+  ['ok','[nav] ','Nav2 waypoint 3/7 · arc turn'],
+  ['warn','[nav]','obstacle @ 0.42m · replanning'],
+  ['ok','[safe]','watchdog 20Hz · relay armed'],
+  ['dim','[slam]','point cloud +192 pts'],
+  ['ok','[link]','telemetry 4G/LoRa uplink OK'],
+];
+let logQueue=[...bootLog], lineIdx=0;
+function pushLog(cls,tag,msg){ logQueue.push([cls,tag,msg]); }
+function renderLine(entry){
+  const [cls,tag,msg]=entry;
+  const div=document.createElement('div'); div.className='ln';
+  const clsMap={ok:'tag',warn:'tag warn',err:'tag err',dim:'tag dim'};
+  div.innerHTML='<span class="'+(clsMap[cls]||'tag')+'">'+tag+'</span> <span class="dim">'+msg+'</span>';
+  termEl.appendChild(div);
+  while(termEl.children.length>9) termEl.removeChild(termEl.firstChild);
+}
+(function typeLoop(){
+  if(logQueue.length){ renderLine(logQueue.shift()); }
+  else { logQueue.push(bootLog[lineIdx % bootLog.length]); lineIdx++; }
+  setTimeout(typeLoop, 850 + Math.random()*500);
+})();
+
+/* roundRect polyfill for older canvas */
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    this.beginPath();this.moveTo(x+r,y);this.arcTo(x+w,y,x+w,y+h,r);
+    this.arcTo(x+w,y+h,x,y+h,r);this.arcTo(x,y+h,x,y,r);this.arcTo(x,y,x+w,y,r);this.closePath();return this;
+  };
+}
+</script>
 </body>
 </html>
